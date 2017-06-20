@@ -1,0 +1,5 @@
+@import "../../utilities";
+
+v-tree {
+	@include custom-scrollbar(#EFF1F3, darken(#EFF1F3, 50%));
+}

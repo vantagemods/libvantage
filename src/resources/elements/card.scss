@@ -1,0 +1,65 @@
+@import "../../utilities";
+
+card {
+    display: block;
+    position: relative;
+
+    .card-wrapper {
+        position: relative;
+        background: #fff;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
+        margin: 16px 24px 0 24px;
+        align-items: center;
+
+        display: flex;
+        padding: 21px 24px;
+    }
+
+    &.with-label {
+        .card-wrapper {
+            &> * {
+                margin-left: 10px;
+            }
+
+            &> :first-child, &> :nth-child(2) {
+                margin-left: 0;
+            }
+        }
+
+        label.card-label {
+            font-weight: bold;
+            font-size: 12px;
+            color: #02394A;
+            letter-spacing: 0.5px;
+            flex: 1;
+        }
+    }
+
+    &.without-label {
+        .card-wrapper {
+            @include custom-scrollbar(#EFF1F3, darken(#EFF1F3, 50%));
+
+            overflow-y: auto;
+            overflow-x: visible;
+            display: block;
+        }
+    }
+
+    table {
+        margin: -16px -24px 2px -24px;
+        width: calc(100% + 48px);
+    }
+}
+
+body.disabled card {
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        background: rgba(255, 255, 255, 0.4);
+    }
+}

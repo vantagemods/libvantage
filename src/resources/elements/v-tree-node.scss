@@ -1,0 +1,101 @@
+@import "../../utilities";
+
+v-tree-node {
+	display: block;
+
+	.node {
+		.node-wrapper {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			height: 30px;
+			margin: 3px 0;
+			
+			.icon {
+				flex: 0;
+				padding-right: 24px;
+				display: inline-block;
+				width: 42px;
+				height: 18px;
+
+				svg {
+					width: 18px;
+					height: 18px;
+
+					* {
+						fill: #295666;
+					}
+				}
+			}
+
+			.name {
+				@extend .ellipsis;
+
+				flex: 1;
+				font-size: 12px;
+				line-height: 30px;
+				color: #295666;
+				letter-spacing: 0.76px;
+			}
+
+			.component {
+				flex: 0;
+				min-width: 150px;
+				text-align: right;
+			}
+		}
+
+		> .nodes {
+			max-height: 0px;
+			padding-left: 42px;
+			overflow: hidden;
+			opacity: 0;
+			transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), opacity 0.5s linear;
+		}
+
+		&.expandable {
+			> .node-wrapper {
+				.icon, .name {
+					&, * {
+						cursor: pointer;
+					}
+				}
+
+				&:hover {
+					.icon {
+						svg * {
+							fill: darken(#295666, 30%);
+						}
+					}
+
+					.name {
+						color: darken(#295666, 30%);
+					}
+				}
+			}
+		}
+
+		&:not(.expandable) {
+			padding-left: 42px;
+		}
+
+		&.expandable.expanded {
+			> .node-wrapper {
+				.name {
+					color: #39AF45;
+				}
+
+				.icon svg * {
+					fill: #39AF45;
+				}
+			}
+
+			> .nodes {
+				max-height: 1000px;
+				opacity: 1;
+				overflow: visible;
+				transition-timing-function: ease-in;
+			}
+		}
+	}
+}

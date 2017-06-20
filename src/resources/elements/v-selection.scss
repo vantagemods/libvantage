@@ -1,0 +1,99 @@
+@import "../../utilities";
+
+v-selection {
+	display: inline-block;
+	width: 100%;
+	max-width: 150px;
+	min-width: 75px;
+
+	.select {
+		* {
+			cursor: pointer;
+		}
+
+		height: 30px;
+		width: 100%;
+		position: relative;
+		background: #fff;
+
+		.value, .option {
+			@extend .ellipsis;
+
+			height: 30px;
+			width: 100%;
+			padding: 0 16px;
+			font-size: 12px;
+			color: #02394A;
+			letter-spacing: 0.5px;
+			line-height: 30px;
+		}
+
+		.value {
+			padding-right: 40px;
+			border-radius: 3px;
+			transition: border-radius 0.3s;
+			border: 1px solid #c0c0c0;
+			border-radius: 3px;
+		}
+
+		.select-arrow {
+			pointer-events: none;
+			position: absolute;
+			right: 10px;
+			top: 3px;
+
+			svg * {
+				fill: #526173;
+			}
+		}
+
+		.options {
+			@include custom-scrollbar(lighten(#c0c0c0, 90%), #c0c0c0);
+
+			border: 1px solid #c0c0c0;
+			position: absolute;
+			left: 0;
+			top: 29px;
+			z-index: 1;
+			width: 100%;
+			max-height: 200px;
+			overflow-x: hidden;
+			overflow-y: auto;
+			visibility: hidden;
+			opacity: 0;
+			border-bottom-right-radius: 3px;
+			border-bottom-left-radius: 3px;
+			transition: opacity 0.3s, visibility 0s linear 0.3s;
+
+			.option {
+				background: #fff;
+
+				&:hover {
+					background: #efefef;
+				}
+			}
+		}
+
+		&:hover {
+			.select-arrow {
+				svg * {
+					fill: #000;
+				}
+			}
+		}
+
+		&.open {
+			.value {
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+
+			}
+
+			.options {
+				opacity: 1;
+				visibility: visible;
+				transition-delay: 0s;
+			}
+		}
+	}
+}

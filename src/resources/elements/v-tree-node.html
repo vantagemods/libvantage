@@ -1,0 +1,57 @@
+<template>
+	<require from="./v-tree-node.css"></require>
+	<require from="../images/minus-svg.html"></require>
+	<require from="../images/plus-svg.html"></require>
+
+	<div class="node ${expanded ? 'expanded' : ''} ${node.nodes.length ? 'expandable' : ''}">
+		<div class="node-wrapper">
+			<div class="icon" if.bind="node.nodes.length" click.delegate="toggle()">
+				<i if.bind="!expanded"><plus-svg></plus-svg></i>
+				<i if.bind="expanded"><minus-svg></minus-svg></i>
+			</div>
+
+			<div class="name" click.delegate="toggle()">${node.name}</div>
+
+			<div class="component" if.bind="node.component">
+				<v-button
+					if.bind="node.component.type == 'button'"
+					click.delegate="node.component.callback()">${node.component.label}</v-button>
+
+				<v-number
+					if.bind="node.component.type == 'number'"
+					value.bind="node.component.value"
+					min.bind="node.component.min"
+					max.bind="node.component.max"
+					placeholder="node.component.placeholder"
+					step.bind="node.component.step"></v-number>
+
+				<v-selection
+					if.bind="node.component.type == 'select'"
+					value.bind="node.component.value"
+					options.bind="node.component.options"></v-selection>
+
+				<v-slider
+					if.bind="node.component.type == 'slider'"
+					value.bind="node.component.value"
+					min.bind="node.component.min"
+					max.bind="node.component.max"
+					step.bind="node.component.step"></v-slider>
+
+				<v-switch
+					if.bind="node.component.type == 'switch'"
+					value.bind="node.component.value"></v-switch>
+
+				<v-text
+					if.bind="node.component.type == 'text'"
+					value.bind="node.component.value"
+					type="text"></v-text>
+			</div>
+		</div>
+
+		<div class="nodes">
+			<div class="nodes-wrapper">
+				<v-tree-node repeat.for="node of node.nodes" node.bind="node"></v-tree-node>
+			</div>
+		</div>
+	</div>
+</template>

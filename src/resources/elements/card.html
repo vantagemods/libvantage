@@ -1,0 +1,8 @@
+<template class="${label ? 'with-label' : 'without-label'}">
+    <require from="./card.css"></require>
+
+    <div class="card-wrapper" css.bind="{maxHeight: height ? height : 'auto', overflowY: height ? 'auto' : 'visible'}">
+    	<label if.bind="label" class="card-label">${label}</label>
+    	<slot></slot>
+    </div>
+</template>

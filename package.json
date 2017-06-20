@@ -1,0 +1,44 @@
+{
+  "name": "libvantage",
+  "version": "0.1.1",
+  "description": "Utilities for creating awesome editors for Vantage.",
+  "license": "GPL-3.0",
+  "author": "Team Vantage",
+  "main": "dist/index.js",
+  "typings": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vantagemods/libvantage"
+  },
+  "scripts": {
+    "lint": "cross-env tslint --project tsconfig.json",
+    "build": "cross-env tsc --project tsconfig.json --outDir dist --module amd",
+    "postbuild": "cross-env copyfiles --up 1 src/**/*.html dist && npm run sass",
+    "prebuild": "cross-env rimraf dist && rimraf node_modules/@types/!node",
+    "changelog": "cross-env conventional-changelog -p angular -i doc/CHANGELOG.md -s",
+    "bump-version": "npm --no-git-tag-version version",
+    "precut-release": "cross-env npm run test",
+    "cut-release": "cross-env npm run changelog && npm run build && npm run doc",
+    "sass": "./node_modules/.bin/node-sass -r ./src --output ./dist"
+  },
+  "dependencies": {
+    "aurelia-framework": "^1.1.2",
+    "big-integer": "^1.6.23",
+    "crc-32": "^1.0.2",
+    "tslib": "^1.6.1"
+  },
+  "devDependencies": {
+    "@types/big-integer": "0.0.31",
+    "@types/node": "^7.0.31",
+    "concurrently": "^3.1.0",
+    "conventional-changelog-cli": "^1.2.0",
+    "copyfiles": "^1.0.0",
+    "cross-env": "^3.1.0",
+    "node-sass": "^4.5.3",
+    "requirejs": "^2.2.0",
+    "requirejs-text": "^2.0.12",
+    "rimraf": "^2.5.4",
+    "tslint": "4.5.1",
+    "typescript": "^2.4"
+  }
+}

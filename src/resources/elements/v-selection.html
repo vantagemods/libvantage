@@ -1,0 +1,12 @@
+<template>
+	<require from="./v-selection.css"></require>
+	<require from="../images/caret-down-svg.html"></require>
+
+    <div class="select ${open ? 'open' : ''}" close-if-click-outside.two-way="open">
+        <div class="value" click.delegate="open = !open">${selectedOption.label}</div>
+        <div class="options">
+            <div repeat.for="option of options" click.delegate="select(option)" class="option">${option.label}</div>
+        </div>
+        <i class="select-arrow"><caret-down-svg></caret-down-svg></i>
+    </div>
+</template>
