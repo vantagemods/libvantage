@@ -4,7 +4,7 @@ export interface TreeNode {
     id?: string;
     name: string;
     component?: TreeComponent;
-    nodes: TreeNode[]|null;
+    nodes?: TreeNode[];
 }
 
 export interface TreeComponent {
@@ -38,7 +38,7 @@ export class VTreeCustomElement implements Tree {
         return this.filterNodesRecursive(predicate, this.nodes, []);
     }
 
-    private findNodeRecursive(predicate: (node: TreeNode) => boolean, nodes: TreeNode[]|null): TreeNode|null {
+    private findNodeRecursive(predicate: (node: TreeNode) => boolean, nodes: TreeNode[]|undefined): TreeNode|null {
         if (!nodes) {
             return null;
         }
@@ -62,7 +62,7 @@ export class VTreeCustomElement implements Tree {
         return this.findNode(n => n.id === id);
     }
 
-    private findNodeByPathRecursive(nodes: TreeNode[]|null, path: string[]): TreeNode|null {
+    private findNodeByPathRecursive(nodes: TreeNode[]|undefined, path: string[]): TreeNode|null {
         if (!path || !path.length || !nodes) {
             return null;
         }

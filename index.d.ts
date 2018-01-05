@@ -89,7 +89,7 @@ export interface TreeNode {
     id?: string;
     name: string;
     component?: TreeComponent;
-    nodes: TreeNode[]|null;
+    nodes?: TreeNode[];
 }
 export interface TreeComponent {
     type: 'number'|'text'|'selection'|'switch'|'slider'|'button';
