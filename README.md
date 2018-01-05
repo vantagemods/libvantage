@@ -24,6 +24,49 @@ This is the official library used to create Xbox One saved game editors for [Van
   - `<v-slider value.bind="gravity" min="0" max="10" step="0.1"></v-slider>`
 - `v-selection` - A combo box/selection input.
   - `<v-selection value.bind="color" options.bind="[{value: 'blue', label: 'Blue'}, {value: 'red', label: 'Red'}]"></v-selection>`
+- `v-tree` - Host named components in an expandable tree.
+  - `<v-tree nodes.bind="nodes"></v-tree>` *See below for usage*
+
+## Tree Component
+
+The tree component (`v-tree`) is an expandable list of other components. It supports all the other inputs provided by the library (`button`, `switch`, `text`, `number`, `slider`, `selection`). The tree is rendered using an array of `TreeNode` objects that you bind to `nodes`.
+
+Here's a basic example of a *Player Stats* node that expands to reveal a *Health* slider.:
+```
+this.nodes = [
+  {
+    name: "Player Stats",
+    nodes: [
+      {
+        name: "Health",
+        component: {
+          type: "slider",
+          value: player.currentHealthValue,
+          min: 0,
+          max: 100000,
+          step: 100,
+        }
+      }
+    ]
+  }
+];
+```
+
+The `value` can use computed properties if required:
+```
+...
+component: {
+  ...
+  get value(): number {
+    return player.currentHealthValue * 10;
+  },
+  set value(health: number) {
+    player.currentHealthValue = health / 10;
+  },
+  ...
+},
+...
+```
 
 ## Value Converters
 
@@ -48,8 +91,8 @@ This is the official library used to create Xbox One saved game editors for [Van
 
 ## Stream
 
-`Stream` is a wrapper around Node's `Buffer` class that makes reading and writing to Buffers less verbose. See `stream.ts` for usage details.
+`Stream` is a wrapper around Node's `Buffer` class that makes reading and writing to Buffers less verbose. See `stream.ts` for implementation details.
 
 ## Miscellaneous and Internal
-- `setEditor(editor: SaveEditor)` - Set the editor implementation used by Vantage. This is done by [main.ts](https://github.com/vantagemods/editor-skeleton/blob/master/src/main.ts) in the Editor Skeleton.
-- `openDevTools()` - Open the dev tools. This is done automatically by Vantage in development mode. You can also press `Ctrl + Shift + D`.
+- `setEditor(editor: SaveEditor)` - Set the editor implementation used by Vantage. This is done by [main.ts](https://github.com/vantagemods/editor-skeleton/blob/master/src/main.ts) in the [Editor Skeleton](https://github.com/vantagemods/editor-skeleton).
+- `openDevTools()` - Open Chrome's dev tools. This is done automatically by Vantage in development mode. You can also press `Ctrl + Shift + D`.
