@@ -1,16 +1,16 @@
 import { bindable, bindingMode, observable } from 'aurelia-framework';
 
-export type SelectInputOption = {
-	label: string,
-	value: any
-};
+export interface SelectInputOption {
+	label: string;
+	value: any;
+}
 
 export class VSelectionCustomElement {
 	@bindable({ defaultBindingMode: bindingMode.twoWay }) value: any;
 	@bindable options: SelectInputOption[];
 
-	private open: boolean = false;
-	@observable private selectedOption: SelectInputOption;
+	public open: boolean = false;
+	@observable public selectedOption: SelectInputOption;
 
 	public bind() {
 		this.valueChanged();

@@ -15,6 +15,7 @@
 			<div class="component" if.bind="node.component">
 				<v-button
 					if.bind="node.component.type == 'button'"
+					disabled.bind="node.component.disabled"
 					click.delegate="node.component.callback()">${node.component.label}</v-button>
 
 				<v-number
@@ -26,7 +27,7 @@
 					step.bind="node.component.step"></v-number>
 
 				<v-selection
-					if.bind="node.component.type == 'select'"
+					if.bind="node.component.type == 'selection'"
 					value.bind="node.component.value"
 					options.bind="node.component.options"></v-selection>
 

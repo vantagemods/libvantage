@@ -1,8 +1,8 @@
 import { bindable, bindingMode } from 'aurelia-framework';
-import { Node } from './v-tree';
+import { TreeNode } from './v-tree';
 
 export class VTreeNodeCustomElement {
-	@bindable({ defaultBindingMode: bindingMode.twoWay }) node: Node;
+	@bindable({ defaultBindingMode: bindingMode.twoWay }) node: TreeNode;
 
 	private expanded: boolean = false;
 

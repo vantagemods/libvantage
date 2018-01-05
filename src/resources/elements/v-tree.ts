@@ -1,29 +1,28 @@
 import { bindable, bindingMode } from 'aurelia-framework';
 
-export interface Node {
+export interface TreeNode {
     id?: string;
     name: string;
-    component?: Component;
-    nodes: Node[]|null;
+    component?: TreeComponent;
+    nodes: TreeNode[]|null;
 }
 
-export interface Component {
-    type: 'number'|'text'|'select'|'switch'|'slider'|'button',
-    value: number|string|boolean|Function;
+export interface TreeComponent {
+    type: 'number'|'text'|'selection'|'switch'|'slider'|'button',
 }
 
 export interface Tree {
-    readonly nodes: Node[];
-    findNodeByPath(path: string|string[]): Node|null;
-    findNodeById(id: string): Node|null;
-    findNode(predicate: (node: Node) => boolean): Node|null;
-    filterNodes(predicate: (node: Node) => boolean): Node[];
+    readonly nodes: TreeNode[];
+    findNodeByPath(path: string|string[]): TreeNode|null;
+    findNodeById(id: string): TreeNode|null;
+    findNode(predicate: (node: TreeNode) => boolean): TreeNode|null;
+    filterNodes(predicate: (node: TreeNode) => boolean): TreeNode[];
 }
 
 export class VTreeCustomElement implements Tree {
-    @bindable({ defaultBindingMode: bindingMode.twoWay }) nodes: Node[];
+    @bindable({ defaultBindingMode: bindingMode.twoWay }) nodes: TreeNode[];
 
-    private filterNodesRecursive(predicate: (node: Node) => boolean, nodes: Node[], matches: Node[]): Node[] {
+    private filterNodesRecursive(predicate: (node: TreeNode) => boolean, nodes: TreeNode[], matches: TreeNode[]): TreeNode[] {
         if (nodes) {
             nodes.forEach(node => {
                 if (predicate(node)) {
@@ -35,11 +34,11 @@ export class VTreeCustomElement implements Tree {
         return matches;
     }
 
-    public filterNodes(predicate: (node: Node) => boolean): Node[] {
+    public filterNodes(predicate: (node: TreeNode) => boolean): TreeNode[] {
         return this.filterNodesRecursive(predicate, this.nodes, []);
     }
 
-    private findNodeRecursive(predicate: (node: Node) => boolean, nodes: Node[]|null): Node|null {
+    private findNodeRecursive(predicate: (node: TreeNode) => boolean, nodes: TreeNode[]|null): TreeNode|null {
         if (!nodes) {
             return null;
         }
@@ -55,15 +54,15 @@ export class VTreeCustomElement implements Tree {
         return null;
     }
 
-    public findNode(predicate: (node: Node) => boolean): Node|null {
+    public findNode(predicate: (node: TreeNode) => boolean): TreeNode|null {
         return this.findNodeRecursive(predicate, this.nodes);
     }
 
-    public findNodeById(id: string): Node|null {
+    public findNodeById(id: string): TreeNode|null {
         return this.findNode(n => n.id === id);
     }
 
-    private findNodeByPathRecursive(nodes: Node[]|null, path: string[]): Node|null {
+    private findNodeByPathRecursive(nodes: TreeNode[]|null, path: string[]): TreeNode|null {
         if (!path || !path.length || !nodes) {
             return null;
         }
@@ -84,7 +83,7 @@ export class VTreeCustomElement implements Tree {
         return null;
     }
 
-    public findNodeByPath(path: string|string[]): Node|null {
+    public findNodeByPath(path: string|string[]): TreeNode|null {
         return this.findNodeByPathRecursive(this.nodes, typeof path === 'string' ? path.split('.') : path);
     }
 }

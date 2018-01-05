@@ -1,7 +1,11 @@
 import * as bigInteger  from 'big-integer';
 import { BigInteger } from "big-integer";
 
-export type SeekOrigin = 'begin'|'end'|'current';
+export enum SeekOrigin {
+    Begin = 'begin',
+    End = 'end',
+    Current = 'current',
+}
 
 export class Stream {
     private _position = 0;
@@ -48,15 +52,15 @@ export class Stream {
         this._position = address;
     }
 
-    public seek(offset: number, origin: SeekOrigin = 'begin'): Stream {
+    public seek(offset: number, origin: SeekOrigin = SeekOrigin.Begin): Stream {
         switch (origin) {
-            case 'begin':
+            case SeekOrigin.Begin:
                 this.position = offset;
                 break;
-            case 'end':
+            case SeekOrigin.End:
                 this.position = this.length - offset;
                 break;
-            case 'current':
+            case SeekOrigin.Current:
                 this.position += offset;
                 break;
         }
@@ -64,7 +68,7 @@ export class Stream {
     }
 
     public skip(offset: number): Stream {
-        this.seek(offset, 'current');
+        this.seek(offset, SeekOrigin.Current);
         return this;
     }
 

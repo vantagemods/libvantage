@@ -16,8 +16,7 @@ export function adler32(buffer: Buffer, initial?: number): number;
 export function fnv0(value: string, init: number, prime: number): number;
 export function crc32(buffer: Buffer, offset?: number, length?: number, seed?: number): number;
 
-export type SeekOrigin = 'begin'|'end'|'current';
-
+// Stream
 export class Stream {
     constructor(buffer: Buffer);
 
@@ -65,4 +64,67 @@ export class Stream {
     writeFloat(value: number): Stream;
     writeDouble(value: number): Stream;
     writeString(value: string, encoding?: BufferEncoding, nullTerminate?: boolean): Stream;
+}
+export enum SeekOrigin {
+    Begin = 'begin',
+    End = 'end',
+    Current = 'current',
+}
+
+// v-selection
+export interface SelectInputOption {
+	label: string;
+	value: any;
+}
+
+// v-tree
+export interface Tree {
+    readonly nodes: TreeNode[];
+    findNodeByPath(path: string|string[]): TreeNode|null;
+    findNodeById(id: string): TreeNode|null;
+    findNode(predicate: (node: TreeNode) => boolean): TreeNode|null;
+    filterNodes(predicate: (node: TreeNode) => boolean): TreeNode[];
+}
+export interface TreeNode {
+    id?: string;
+    name: string;
+    component?: TreeComponent;
+    nodes: TreeNode[]|null;
+}
+export interface TreeComponent {
+    type: 'number'|'text'|'selection'|'switch'|'slider'|'button';
+}
+export interface TreeTextComponent extends TreeComponent {
+    type: 'text';
+    value: string;
+}
+export interface TreeSwitchComponent extends TreeComponent {
+    type: 'switch';
+    value: boolean;
+}
+export interface TreeButtonComponent extends TreeComponent {
+    type: 'switch';
+    label: string;
+    callback(): any;
+    disabled?: boolean;
+}
+export interface TreeSelectionComponent extends TreeComponent {
+    type: 'selection';
+    value: SelectInputOption;
+    options: SelectInputOption[];
+}
+export interface TreeNumberComponent extends TreeComponent {
+    type: 'number';
+    value: number;
+    min: number;
+    max: number;
+    step: number;
+    placeholder?: string;
+}
+export interface TreeSliderComponent extends TreeComponent {
+    type: 'slider';
+    value: number;
+    min: number;
+    max: number;
+    step: number;
 }

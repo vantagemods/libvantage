@@ -1,6 +1,6 @@
 This is the official library used to create Xbox One saved game editors for [Vantage](https://vantagemods.com).
 
-*Note: This library is under heavy development and includes very limited functionality. Pull requests are very welcome!*
+*Pull requests are very welcome!*
 
 ## Crypto API
 
