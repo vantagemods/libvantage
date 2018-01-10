@@ -270,7 +270,7 @@ export class Stream {
         }
         const byteLength = Buffer.byteLength(value, encoding);
         this.expand(byteLength);
-        this._buffer.write(value, this.position, value.length, encoding);
+        this._buffer.write(value, this.position, byteLength, encoding);
         this.position += byteLength;
         return this;
     }
