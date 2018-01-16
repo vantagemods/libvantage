@@ -45,11 +45,14 @@ export class Stream {
     readUInt64(): BigInteger;
     readInt64Unsafe(): number;
     readUInt64Unsafe(): number;
+    readSignedBigInteger(size: number): BigInteger
+    readUnsignedBigInteger(size: number): BigInteger;
     readFloat(): number;
     readDouble(): number;
     loopByte<T>(callback: (io: Stream) => T): T[];
     loopUInt16<T>(callback: (io: Stream) => T): T[];
     loopUInt32<T>(callback: (io: Stream) => T): T[];
+    loopUInt64<T>(callback: (io: Stream) => T): T[];
     readString(encoding: BufferEncoding, chars?: number): string;
 
     writeBytes(value: Buffer): Stream;
@@ -61,6 +64,7 @@ export class Stream {
     writeInt32(value: number): Stream;
     writeUInt64(value: BigInteger|number): Stream;
     writeInt64(value: BigInteger|number): Stream;
+    writeBigInteger(value: BigInteger, byteLength?: number): Stream 
     writeFloat(value: number): Stream;
     writeDouble(value: number): Stream;
     writeString(value: string, encoding?: BufferEncoding, nullTerminate?: boolean): Stream;

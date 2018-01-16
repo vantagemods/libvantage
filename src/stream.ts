@@ -7,6 +7,15 @@ export enum SeekOrigin {
     Current = 'current',
 }
 
+const minUInt64 = bigInteger.zero;
+const maxUInt64 = bigInteger("18446744073709551615", 10);
+const minInt64 = bigInteger('-9223372036854775808', 10);
+const maxInt64 = bigInteger('9223372036854775807', 10);
+
+const bigIntNegateCache = new Map<number, BigInteger>([
+    [8, maxUInt64.add(1)],
+]);
+
 export class Stream {
     private _position = 0;
     private _length: number;
@@ -131,22 +140,43 @@ export class Stream {
     }
 
     public readInt64(): BigInteger {
-        const buffer = this.readBytes(8);
-        buffer.reverse();
-        return bigInteger(buffer.toString('hex'), 16);
+        return this.readSignedBigInteger(8);
     }
 
     public readUInt64(): BigInteger {
-        return this.readInt64(); // TODO: Fix sign.
+        return this.readUnsignedBigInteger(8);
     }
 
     public readInt64Unsafe(): number {
-        bigInteger()
         return this.readInt64().toJSNumber();
     }
 
     public readUInt64Unsafe(): number {
         return this.readUInt64().toJSNumber();
+    }
+
+    public readSignedBigInteger(size: number): BigInteger {
+        const buffer = this.readBytes(size);
+        buffer.reverse();
+        let value = bigInteger(buffer.toString('hex'), 16);
+        return (buffer[0] & 0x80) > 0
+            ? this.setBigIntegerSign(value, size, true)
+            : value;
+    }
+
+    private setBigIntegerSign(value: BigInteger, size: number, negative: boolean): BigInteger {
+        let negateValue = bigIntNegateCache.get(size);
+        if (negateValue === undefined) {
+            negateValue = bigInteger('f'.repeat(size * 2), 16).add(1);
+            bigIntNegateCache.set(size, negateValue);
+        }
+        return value[negative ? 'subtract' : 'add'](negateValue);
+    }
+
+    public readUnsignedBigInteger(size: number): BigInteger {
+        const buffer = this.readBytes(size);
+        buffer.reverse();
+        return bigInteger(buffer.toString('hex'), 16);
     }
 
     public readFloat(): number {
@@ -158,7 +188,7 @@ export class Stream {
     }
 
     private loop<T>(type: string, callback: (io: Stream) => T): T[] {
-        let count = (<any>this)[`read${type}`]();
+        let count: number = (<any>this)[`read${type}`]();
         const results: T[] = [];
         while (count--) {
             results.push(callback(this));
@@ -176,6 +206,10 @@ export class Stream {
 
     public loopUInt32<T>(callback: (io: Stream) => T): T[] {
         return this.loop('UInt32', callback);
+    }
+
+    public loopUInt64<T>(callback: (io: Stream) => T): T[] {
+        return this.loop('UInt64Unsafe', callback);
     }
 
     private getCStringLength(encoding: BufferEncoding): number {
@@ -243,15 +277,43 @@ export class Stream {
     }
 
     public writeUInt64(value: BigInteger|number): Stream {
-        return this.writeInt64(value);
+        return this.writeBigInteger(this.assertBigIntegerBounds(value, minUInt64, maxUInt64), 8);  
     }
 
     public writeInt64(value: BigInteger|number): Stream {
+        return this.writeBigInteger(this.assertBigIntegerBounds(value, minInt64, maxInt64), 8);  
+    }
+
+    public writeBigInteger(value: BigInteger, byteLength: number = -1): Stream {
+        let hexString = value.toString(16);
+        const negative = value.isNegative();
+        if (negative) {
+            value = this.setBigIntegerSign(value, (hexString.length - 1) / 2, false);
+            hexString = value.toString(16);
+        }
+        
+        if (byteLength >= 0) {
+            const nibbleLength = byteLength * 2;
+            if (hexString.length > nibbleLength) {
+                throw new Error(`Cannot write BigInteger larger than ${byteLength} bytes.`);
+            }
+            if (hexString.length < nibbleLength) {
+                hexString = hexString.padStart(nibbleLength, negative ? 'f' : '0');
+            }
+        }
+        return this.writeBytes(this.reverseBufferInPlace(Buffer.from(hexString, 'hex')));
+    }
+
+    private assertBigIntegerBounds(value: BigInteger|number, min: BigInteger, max: BigInteger): BigInteger {
         if (typeof value === 'number') {
             value = bigInteger(value);
         }
-        this.writeBytes(Buffer.from(value.toString(16), 'hex'));
-        return this;
+        if (value.lt(min)) {
+            throw new Error('Cannot write integer less than minimum value.');
+        } else if (value.gt(max)) {
+            throw new Error('Cannot write integer greater than maximum value.');
+        }
+        return value;
     }
 
     public writeFloat(value: number): Stream {
@@ -273,5 +335,14 @@ export class Stream {
         this._buffer.write(value, this.position, byteLength, encoding);
         this.position += byteLength;
         return this;
+    }
+
+    private reverseBufferInPlace(buffer: Buffer): Buffer {
+        for (let x = 0, i = buffer.length - 1; x < i; ++x, --i) {
+            var value = buffer[i];
+            buffer[i] = buffer[x];
+            buffer[x] = value;
+        }
+        return buffer;
     }
 }
