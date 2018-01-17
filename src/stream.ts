@@ -99,10 +99,9 @@ export class Stream {
         }
     }
 
-    public readBytes(length: number): Buffer {        
-        const buf = this._buffer.slice(this.position, this.position + length);
+    public readBytes(length: number): Buffer {
         this.position += length;
-        return buf;
+        return this._buffer.slice(this.position - length, this.position);
     }
 
     public readToEnd(): Buffer {
@@ -110,9 +109,8 @@ export class Stream {
     }
 
     private readNumber(type: string, size: number): number {
-        const result = (<any>this._buffer)[`read${type}`](this.position);
         this.position += size;
-        return result;
+        return (<any>this._buffer)[`read${type}`](this.position - size);
     }
 
     public readByte(): number {
@@ -228,9 +226,8 @@ export class Stream {
         const length = chars === -1 
             ? this.getCStringLength(encoding) 
             : (Buffer.byteLength('\0', encoding) * chars);
-        const result = this._buffer.toString(encoding, this.position, this.position + length);
         this.position += length;
-        return result;
+        return this._buffer.toString(encoding, this.position - length, this.position);
     }
 
     public writeBytes(value: Buffer): Stream {
