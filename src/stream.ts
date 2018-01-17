@@ -244,8 +244,7 @@ export class Stream {
         return this;
     }
 
-    public writeByte(value: number): Stream {
-        this.expand(1);           
+    public writeByte(value: number): Stream {        
         return this.writeNumber('UInt8', (value & 0xFF), 1);
     }
 
@@ -253,23 +252,19 @@ export class Stream {
         return this.writeByte(flag ? 1 : 0);
     }
 
-    public writeUInt16(value: number): Stream {
-        this.expand(2);           
+    public writeUInt16(value: number): Stream {       
         return this.writeNumber('UInt16LE', value >>> 0, 2);
     }
 
     public writeInt16(value: number): Stream {
-        this.expand(2);   
         return this.writeNumber('Int16LE', value, 2);
     }
 
-    public writeUInt32(value: number): Stream {
-        this.expand(4);        
+    public writeUInt32(value: number): Stream {      
         return this.writeNumber('UInt32LE', value >>> 0, 4);
     }
 
     public writeInt32(value: number): Stream {
-        this.expand(4);
         return this.writeNumber('Int32LE', value, 4);
     }
 
@@ -313,13 +308,11 @@ export class Stream {
         return value;
     }
 
-    public writeFloat(value: number): Stream {
-        this.expand(4);        
+    public writeFloat(value: number): Stream {    
         return this.writeNumber('FloatLE', value, 4);
     }
 
     public writeDouble(value: number): Stream {
-        this.expand(8);
         return this.writeNumber('DoubleLE', value, 8);
     }
 
