@@ -18,10 +18,10 @@ export function crc32(buffer: Buffer, offset?: number, length?: number, seed?: n
 
 // Stream
 export class Stream {
-    constructor(buffer: Buffer);
+    constructor(buffer: Buffer, endianness?: Endianness);
 
-    static alloc(size: number): Stream;
-    static reserve(size: number): Stream;
+    static alloc(size: number, endianness?: Endianness): Stream;
+    static reserve(size: number, endianness?: Endianness): Stream;
 
     getBuffer(): Buffer;
     dispose(): void;
@@ -29,6 +29,7 @@ export class Stream {
     eof: boolean;
     length: number;
     position: number;
+    endianness: Endianness;
     seek(offset: number, origin?: SeekOrigin): Stream;
     skip(offset: number): Stream;
     resize(size: number): Stream;
@@ -68,6 +69,10 @@ export class Stream {
     writeFloat(value: number): Stream;
     writeDouble(value: number): Stream;
     writeString(value: string, encoding?: BufferEncoding, nullTerminate?: boolean): Stream;
+}
+export enum Endianness {
+    Little = 'le',
+    Big = 'be',
 }
 export enum SeekOrigin {
     Begin = 'begin',

@@ -7,6 +7,11 @@ export enum SeekOrigin {
     Current = 'current',
 }
 
+export enum Endianness {
+    Little = 'le',
+    Big = 'be',
+}
+
 const minUInt64 = bigInteger.zero;
 const maxUInt64 = bigInteger("18446744073709551615", 10);
 const minInt64 = bigInteger('-9223372036854775808', 10);
@@ -19,17 +24,20 @@ const bigIntNegateCache = new Map<number, BigInteger>([
 export class Stream {
     private _position = 0;
     private _length: number;
-
-    constructor(private _buffer: Buffer) {
+    private _endiannessValue: Endianness;
+    private _endiannessPostfix: string;
+ 
+    constructor(private _buffer: Buffer, endianness = Endianness.Little) {
         this._length = _buffer.length;
+        this.endianness = endianness;
     }
 
-    public static alloc(size: number): Stream {
-        return new Stream(Buffer.alloc(size));
+    public static alloc(size: number, endianness?: Endianness): Stream {
+        return new Stream(Buffer.alloc(size), endianness);
     }
 
-    public static reserve(size: number): Stream {
-        const stream = Stream.alloc(size);
+    public static reserve(size: number, endianness?: Endianness): Stream {
+        const stream = Stream.alloc(size, endianness);
         stream._length = 0;
         return stream;
     }
@@ -40,6 +48,15 @@ export class Stream {
 
     public dispose(): void {
         this._buffer = <any>null;
+    }
+
+    public get endianness(): Endianness {
+        return this._endiannessValue;
+    }
+
+    public set endianness(endianness: Endianness) {
+        this._endiannessValue = endianness;
+        this._endiannessPostfix = endianness === Endianness.Big ? 'BE' : 'LE';
     }
 
     public get eof(): boolean {
@@ -110,7 +127,7 @@ export class Stream {
 
     private readNumber(type: string, size: number): number {
         this.position += size;
-        return (<any>this._buffer)[`read${type}`](this.position - size);
+        return (<any>this._buffer)[`read${type}${size > 1 ? this._endiannessPostfix : ''}`](this.position - size);
     }
 
     public readByte(): number {
@@ -122,19 +139,19 @@ export class Stream {
     }
 
     public readUInt16(): number {
-        return this.readNumber('UInt16LE', 2);
+        return this.readNumber('UInt16', 2);
     }
 
     public readInt16(): number {
-        return this.readNumber('Int16LE', 2);
+        return this.readNumber('Int16', 2);
     }
 
     public readUInt32(): number {
-        return this.readNumber('UInt32LE', 4);
+        return this.readNumber('UInt32', 4);
     }
 
     public readInt32(): number {
-        return this.readNumber('Int32LE', 4);
+        return this.readNumber('Int32', 4);
     }
 
     public readInt64(): BigInteger {
@@ -155,7 +172,9 @@ export class Stream {
 
     public readSignedBigInteger(size: number): BigInteger {
         const buffer = this.readBytes(size);
-        buffer.reverse();
+        if (this.endianness === Endianness.Little) {
+            buffer.reverse();
+        }
         let value = bigInteger(buffer.toString('hex'), 16);
         return (buffer[0] & 0x80) > 0
             ? this.setBigIntegerSign(value, size, true)
@@ -173,16 +192,18 @@ export class Stream {
 
     public readUnsignedBigInteger(size: number): BigInteger {
         const buffer = this.readBytes(size);
-        buffer.reverse();
+        if (this.endianness === Endianness.Little) {
+            buffer.reverse();
+        }
         return bigInteger(buffer.toString('hex'), 16);
     }
 
     public readFloat(): number {
-        return this.readNumber('FloatLE', 4);
+        return this.readNumber('Float', 4);
     }
 
     public readDouble(): number {
-        return this.readNumber('DoubleLE', 8);
+        return this.readNumber('Double', 8);
     }
 
     private loop<T>(type: string, callback: (io: Stream) => T): T[] {
@@ -239,7 +260,7 @@ export class Stream {
 
     private writeNumber(type: string, value: number, size: number): Stream {
         this.expand(size);
-        (<any>this._buffer)[`write${type}`](value, this.position);
+        (<any>this._buffer)[`write${type}${size > 1 ? this._endiannessPostfix : ''}`](value, this.position);
         this.position += size;
         return this;
     }
@@ -253,19 +274,19 @@ export class Stream {
     }
 
     public writeUInt16(value: number): Stream {       
-        return this.writeNumber('UInt16LE', value >>> 0, 2);
+        return this.writeNumber('UInt16', value >>> 0, 2);
     }
 
     public writeInt16(value: number): Stream {
-        return this.writeNumber('Int16LE', value, 2);
+        return this.writeNumber('Int16', value, 2);
     }
 
     public writeUInt32(value: number): Stream {      
-        return this.writeNumber('UInt32LE', value >>> 0, 4);
+        return this.writeNumber('UInt32', value >>> 0, 4);
     }
 
     public writeInt32(value: number): Stream {
-        return this.writeNumber('Int32LE', value, 4);
+        return this.writeNumber('Int32', value, 4);
     }
 
     public writeUInt64(value: BigInteger|number): Stream {
@@ -293,7 +314,11 @@ export class Stream {
                 hexString = hexString.padStart(nibbleLength, negative ? 'f' : '0');
             }
         }
-        return this.writeBytes(this.reverseBufferInPlace(Buffer.from(hexString, 'hex')));
+        let buffer = Buffer.from(hexString, 'hex');
+        if (this.endianness === Endianness.Little) {
+            buffer.reverse();
+        }
+        return this.writeBytes(buffer);
     }
 
     private assertBigIntegerBounds(value: BigInteger|number, min: BigInteger, max: BigInteger): BigInteger {
@@ -309,11 +334,11 @@ export class Stream {
     }
 
     public writeFloat(value: number): Stream {    
-        return this.writeNumber('FloatLE', value, 4);
+        return this.writeNumber('Float', value, 4);
     }
 
     public writeDouble(value: number): Stream {
-        return this.writeNumber('DoubleLE', value, 8);
+        return this.writeNumber('Double', value, 8);
     }
 
     public writeString(value: string, encoding: BufferEncoding = 'utf8', nullTerminate: boolean = false): Stream {
@@ -325,14 +350,5 @@ export class Stream {
         this._buffer.write(value, this.position, byteLength, encoding);
         this.position += byteLength;
         return this;
-    }
-
-    private reverseBufferInPlace(buffer: Buffer): Buffer {
-        for (let x = 0, i = buffer.length - 1; x < i; ++x, --i) {
-            var value = buffer[i];
-            buffer[i] = buffer[x];
-            buffer[x] = value;
-        }
-        return buffer;
     }
 }
