@@ -1,8 +1,9 @@
 import { FrameworkConfiguration } from 'aurelia-framework';
 
 export * from './vantage';
-export * from './stream';
 export * from './crypto/index';
+export * from './io/index';
+export * from './compression/index';
 
 /**
  * Register the library with Aurelia.
@@ -16,7 +17,7 @@ export function configure(config: FrameworkConfiguration): void {
         './resources/elements/v-slider',
         './resources/elements/v-switch',
         './resources/elements/v-text',
-        './resources/elements/v-tree',
+        './resources/elements/v-tree',       
         './resources/elements/card',
         './resources/value-converters/array',
         './resources/value-converters/number',

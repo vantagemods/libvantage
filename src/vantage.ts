@@ -11,7 +11,6 @@ interface Vantage {
 
 const wind = <any>window;
 const vantage: Vantage = wind.vantage;
-delete wind.vantage; // Don't need this anymore.
 
 // Restore allowed node modules.
 wind.Buffer = vantage.Buffer;
