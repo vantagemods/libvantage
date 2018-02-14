@@ -1,6 +1,6 @@
 {
   "name": "libvantage",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Utilities for creating awesome editors for Vantage.",
   "license": "GPL-3.0",
   "author": "Team Vantage",
@@ -20,8 +20,8 @@
   "dependencies": {
     "aurelia-framework": "^1.1.5",
     "big-integer": "^1.6.26",
-    "crc-32": "^1.1.1",
-    "tslib": "^1.8.1"
+    "crc-32": "^1.2.0",
+    "tslib": "^1.9.0"
   },
   "devDependencies": {
     "@types/big-integer": "0.0.31",
@@ -34,6 +34,6 @@
     "requirejs-text": "^2.0.15",
     "rimraf": "^2.6.2",
     "tslint": "4.5.1",
-    "typescript": "^2.6"
+    "typescript": "^2.7.1"
   }
 }
