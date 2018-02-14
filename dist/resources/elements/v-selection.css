@@ -1,0 +1,82 @@
+.hide {
+  display: none !important; }
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both; }
+
+.ellipsis, v-selection .select .value, v-selection .select .option {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; }
+
+v-selection {
+  display: inline-block;
+  width: 100%;
+  max-width: 150px;
+  min-width: 75px; }
+  v-selection .select {
+    height: 30px;
+    width: 100%;
+    position: relative;
+    background: #fff; }
+    v-selection .select * {
+      cursor: pointer; }
+    v-selection .select .value, v-selection .select .option {
+      height: 30px;
+      width: 100%;
+      padding: 0 16px;
+      font-size: 12px;
+      color: #02394A;
+      letter-spacing: 0.5px;
+      line-height: 30px; }
+    v-selection .select .value {
+      padding-right: 40px;
+      border-radius: 3px;
+      transition: border-radius 0.3s;
+      border: 1px solid #c0c0c0;
+      border-radius: 3px; }
+    v-selection .select .select-arrow {
+      pointer-events: none;
+      position: absolute;
+      right: 10px;
+      top: 3px; }
+      v-selection .select .select-arrow svg * {
+        fill: #526173; }
+    v-selection .select .options {
+      border: 1px solid #c0c0c0;
+      position: absolute;
+      left: 0;
+      top: 29px;
+      z-index: 1;
+      width: 100%;
+      max-height: 200px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      visibility: hidden;
+      opacity: 0;
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+      transition: opacity 0.3s, visibility 0s linear 0.3s; }
+      v-selection .select .options::-webkit-scrollbar {
+        background-color: white;
+        width: 10px;
+        box-shadow: inset 2px 2px 5px 0px rgba(0, 0, 0, 0.3); }
+      v-selection .select .options::-webkit-scrollbar-thumb:window-inactive, v-selection .select .options::-webkit-scrollbar-thumb {
+        background: #c0c0c0; }
+        v-selection .select .options::-webkit-scrollbar-thumb:window-inactive:hover, v-selection .select .options::-webkit-scrollbar-thumb:hover {
+          background: #cdcdcd; }
+      v-selection .select .options .option {
+        background: #fff; }
+        v-selection .select .options .option:hover {
+          background: #efefef; }
+    v-selection .select:hover .select-arrow svg * {
+      fill: #000; }
+    v-selection .select.open .value {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0; }
+    v-selection .select.open .options {
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s; }

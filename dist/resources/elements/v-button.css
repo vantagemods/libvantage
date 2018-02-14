@@ -1,0 +1,33 @@
+.hide {
+  display: none !important; }
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both; }
+
+.ellipsis, v-button {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; }
+
+v-button {
+  display: inline-block;
+  max-width: 100%;
+  border-radius: 3px;
+  background: #39AF45;
+  height: 30px;
+  font-weight: 900;
+  font-size: 12px;
+  color: #fff;
+  letter-spacing: 0.5px;
+  line-height: 30px;
+  padding: 0 13px;
+  border: 0;
+  transition: background 0.15s;
+  cursor: pointer; }
+  v-button:hover {
+    background: #54c760; }
+  v-button.disabled {
+    pointer-events: none;
+    opacity: 0.5; }

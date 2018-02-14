@@ -1,0 +1,46 @@
+v-slider {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 180px; }
+  v-slider input[type=range] {
+    -webkit-appearance: none;
+    background: transparent;
+    cursor: pointer;
+    width: 100%;
+    margin: 0; }
+    v-slider input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 13px;
+      height: 13px;
+      background-color: #40AC3F;
+      border-radius: 50%;
+      margin: -5px 0 0 0;
+      padding: 0;
+      transition: background-color 0.15s; }
+      v-slider input[type=range]::-webkit-slider-thumb:hover {
+        background-color: #5cc35b;
+        cursor: url(data:application/octet-stream;base64,AAACAAEAICACAAcABQAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAAAEAAAAAAAAAAAAAAgAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8AAAA/AAAAfwAAAP+AAAH/gAAB/8AAA//AAAd/wAAGf+AAAH9gAADbYAAA2yAAAZsAAAGbAAAAGAAAAAAAAA//////////////////////////////////////////////////////////////////////////////////////gH///4B///8Af//+AD///AA///wAH//4AB//8AAf//AAD//5AA///gAP//4AD//8AF///AB///5A////5///8=), default; }
+      v-slider input[type=range]::-webkit-slider-thumb:active:hover {
+        cursor: url(data:application/octet-stream;base64,AAACAAEAICACAAcABQAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAAAEAAAAAAAAAAAAAAgAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8AAAA/AAAAfwAAAP+AAAH/gAAB/8AAAH/AAAB/wAAA/0AAANsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////////////////////////////////////////////////////////////////////////////////gH///4B///8Af//+AD///AA///wAH//+AB///wAf//4AH//+AD///yT/////////////////////////////8=), default; }
+    v-slider input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 3px;
+      border-radius: 3px;
+      background: rgba(41, 86, 102, 0.25);
+      margin: 0;
+      padding: 0; }
+    v-slider input[type=range]:focus {
+      outline: none; }
+  v-slider .label-wrapper {
+    margin: 3px 7px 0 6.5px;
+    text-align: initial; }
+  v-slider label {
+    font-family: Montserrat;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 10px;
+    color: #295666;
+    letter-spacing: 0.25px;
+    text-align: center;
+    transform: translate(-50%, 0); }

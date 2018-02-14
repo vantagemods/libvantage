@@ -1,0 +1,8 @@
+<template>
+	<require from="./v-slider.css"></require>
+
+	<input type="range" min.bind="min" max.bind="max" step.bind="step" value.bind="inputValue">
+	<div class="label-wrapper">
+		<label ref="labelElement">${label}</label>
+	</div>
+</template>

@@ -1,0 +1,65 @@
+.hide {
+  display: none !important; }
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both; }
+
+.ellipsis, v-tree-node .node .node-wrapper .name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; }
+
+v-tree-node {
+  display: block; }
+  v-tree-node .node .node-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 30px;
+    margin: 3px 0; }
+    v-tree-node .node .node-wrapper .icon {
+      flex: 0;
+      padding-right: 24px;
+      display: inline-block;
+      width: 42px;
+      height: 18px; }
+      v-tree-node .node .node-wrapper .icon svg {
+        width: 18px;
+        height: 18px; }
+        v-tree-node .node .node-wrapper .icon svg * {
+          fill: #295666; }
+    v-tree-node .node .node-wrapper .name {
+      flex: 1;
+      font-size: 12px;
+      line-height: 30px;
+      color: #295666;
+      letter-spacing: 0.76px; }
+    v-tree-node .node .node-wrapper .component {
+      flex: 0;
+      min-width: 150px;
+      text-align: right; }
+  v-tree-node .node > .nodes {
+    max-height: 0px;
+    padding-left: 42px;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), opacity 0.5s linear; }
+  v-tree-node .node.expandable > .node-wrapper .icon, v-tree-node .node.expandable > .node-wrapper .icon *, v-tree-node .node.expandable > .node-wrapper .name, v-tree-node .node.expandable > .node-wrapper .name * {
+    cursor: pointer; }
+  v-tree-node .node.expandable > .node-wrapper:hover .icon svg * {
+    fill: black; }
+  v-tree-node .node.expandable > .node-wrapper:hover .name {
+    color: black; }
+  v-tree-node .node:not(.expandable) {
+    padding-left: 42px; }
+  v-tree-node .node.expandable.expanded > .node-wrapper .name {
+    color: #39AF45; }
+  v-tree-node .node.expandable.expanded > .node-wrapper .icon svg * {
+    fill: #39AF45; }
+  v-tree-node .node.expandable.expanded > .nodes {
+    max-height: 1000px;
+    opacity: 1;
+    overflow: visible;
+    transition-timing-function: ease-in; }

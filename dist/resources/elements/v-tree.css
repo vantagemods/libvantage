@@ -1,0 +1,22 @@
+.hide {
+  display: none !important; }
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both; }
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; }
+
+v-tree::-webkit-scrollbar {
+  background-color: #EFF1F3;
+  width: 10px;
+  box-shadow: inset 2px 2px 5px 0px rgba(0, 0, 0, 0.3); }
+
+v-tree::-webkit-scrollbar-thumb:window-inactive, v-tree::-webkit-scrollbar-thumb {
+  background: #617282; }
+  v-tree::-webkit-scrollbar-thumb:window-inactive:hover, v-tree::-webkit-scrollbar-thumb:hover {
+    background: #6c7e90; }

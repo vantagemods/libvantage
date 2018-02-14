@@ -1,0 +1,13 @@
+<template>
+	<require from="./v-number.css"></require>
+	<require from="../images/minus-svg.html"></require>
+	<require from="../images/plus-svg.html"></require>
+
+    <button disabled.bind="!canDecrease" click.delegate="decrease()" class="decrement">
+    	<i><minus-svg></minus-svg></i>
+    </button>
+    <input type="number" placeholder.bind="placeholder" value.bind="inputValue" min.bind="min" max.bind="max" step.bind="step">
+    <button disabled.bind="!canIncrease" click.delegate="increase()" class="increment">
+    	<i><plus-svg></plus-svg></i>
+    </button>
+</template>

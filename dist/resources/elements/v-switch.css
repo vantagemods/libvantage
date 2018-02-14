@@ -1,0 +1,27 @@
+v-switch .switch {
+  display: flex;
+  width: 38px;
+  height: 24px;
+  border: 3px solid #39AF45;
+  border-radius: 12px;
+  position: relative;
+  transition: border-color 0.15s; }
+  v-switch .switch, v-switch .switch * {
+    cursor: pointer; }
+  v-switch .switch:before {
+    content: "";
+    display: block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    background: #39AF45;
+    border-radius: 7.5px;
+    transition: left 0.15s, background-color 0.15s; }
+  v-switch .switch.on:before {
+    left: 15px; }
+  v-switch .switch:hover {
+    border-color: #54c760; }
+    v-switch .switch:hover:before {
+      background-color: #54c760; }

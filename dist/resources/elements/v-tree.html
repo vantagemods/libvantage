@@ -1,0 +1,6 @@
+<template>
+	<require from="./v-tree.css"></require>
+	<require from="./v-tree-node"></require>
+
+	<v-tree-node repeat.for="node of nodes" node.bind="node"></v-tree-node>
+</template>
