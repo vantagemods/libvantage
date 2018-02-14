@@ -41,11 +41,13 @@ export class Aes {
     }
     static createDecryptor(mode: AesMode|string, key: string|Buffer, iv?: string|Buffer, autoPadding = true, auth?: Buffer) : ICryptoTransform {
         const decipher = createDecipher(getAesAlgorithmName(mode, key.length), key, iv, autoPadding);
-        if(mode == AesMode.GMC && auth != null) {
-            decipher.setAuthTag(auth);
-        }
-        else {
-            throw new Error("invalid auth tag");
+        if(mode == AesMode.GMC) {
+            if(auth != null) {
+                decipher.setAuthTag(auth);
+            }
+            else {
+                throw new Error("invalid auth tag");
+            }
         }
         return new AesCryptoTransform(decipher, mode == AesMode.GMC);
     } 

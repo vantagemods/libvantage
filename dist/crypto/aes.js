@@ -46,11 +46,13 @@ define(["require", "exports", "./cipher"], function (require, exports, cipher_1)
         Aes.createDecryptor = function (mode, key, iv, autoPadding, auth) {
             if (autoPadding === void 0) { autoPadding = true; }
             var decipher = cipher_1.createDecipher(getAesAlgorithmName(mode, key.length), key, iv, autoPadding);
-            if (mode == AesMode.GMC && auth != null) {
-                decipher.setAuthTag(auth);
-            }
-            else {
-                throw new Error("invalid auth tag");
+            if (mode == AesMode.GMC) {
+                if (auth != null) {
+                    decipher.setAuthTag(auth);
+                }
+                else {
+                    throw new Error("invalid auth tag");
+                }
             }
             return new AesCryptoTransform(decipher, mode == AesMode.GMC);
         };
