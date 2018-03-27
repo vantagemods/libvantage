@@ -1,4 +1,4 @@
-This is the official library used to create Xbox One saved game editors for [Vantage](https://vantagemods.com).
+This is the official library used to create PC saved game editors for [Vantage](https://vantagemods.com).
 
 *Pull requests are very welcome!*
 
